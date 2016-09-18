@@ -1,4 +1,4 @@
--- v1.0.1
+-- v1.0.2
 local Table = dofile('/modules/Table.lua')
 local terminal = dofile('/modules/terminal.lua')
 
@@ -227,11 +227,13 @@ local menuinterface = {
             local choice = self:getChoiceClicked(arg[2], arg[3]);
             if (choice) then
                 -- briefly highlight the clicked text
+                local restoreColor = term.getTextColor()
                 term.setCursorPos(choice.coords[1][1], choice.coords[1][2])
                 term.setTextColor(colors.white)
                 for key, ye in pairs(self.menus[self.data.menu.key]) do
                     if self.menus[self.data.menu.key][key] == choice then
                         io.write(ye[1])
+                        term.setTextColor(restoreColor)
                         break
                     end
                 end
