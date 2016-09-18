@@ -1,4 +1,4 @@
--- v1.0.0
+-- v1.0.1
 local Table = dofile('/modules/Table.lua')
 local terminal = dofile('/modules/terminal.lua')
 
@@ -6,8 +6,8 @@ local menuinterface = {
 
     useHeaders = false,
 
-	data = {
-		term = {
+    data = {
+        term = {
             bgColor = colors.black,
             fgColor = colors.lime,
             width = nil,
@@ -41,11 +41,11 @@ local menuinterface = {
             width = nil,
             height = nil
         }
-	},
+    },
 
-	menus = {},
+    menus = {},
 
-	show = function(self)
+    show = function(self)
         self.data.window.width, self.data.window.height = term.getSize()
         self.data.menu.columnSize = self.data.window.width / 2
 
@@ -56,18 +56,18 @@ local menuinterface = {
         term.setCursorPos(1, 2)
 
         self.data.running = true
-		while (self.data.running) do
+        while (self.data.running) do
             self:draw()
             self:handleEvent(os.pullEvent())
         end
-	end,
+    end,
 
     close = function(self)
         self.data.running = false
         terminal.reset()
     end,
 
-	back = function(self)
+    back = function(self)
         local historySize = #self.data.menu.history
         local key = self.data.menu.history[historySize]
 
@@ -101,7 +101,7 @@ local menuinterface = {
         self:cwrite(self.data.menu.message, colors.white)
     end,
 
-	drawMenu = function(self)
+    drawMenu = function(self)
         local menu = self.menus[self.data.menu.key]
         local menuSize = Table.size(menu)
         local yStart = 3
@@ -226,7 +226,18 @@ local menuinterface = {
         elseif (eventType == 'mouse_click') then
             local choice = self:getChoiceClicked(arg[2], arg[3]);
             if (choice) then
-                -- Select the menu item that was clicked 
+                -- briefly highlight the clicked text
+                term.setCursorPos(choice.coords[1][1], choice.coords[1][2])
+                term.setTextColor(colors.white)
+                for key, ye in pairs(self.menus[self.data.menu.key]) do
+                    if self.menus[self.data.menu.key][key] == choice then
+                        io.write(ye[1])
+                        break
+                    end
+                end
+                sleep(.12) 
+
+                -- Select the menu item that was clicked
                 self:select(
                     Table.position(choice, self.menus[self.data.menu.key])
                 )
