@@ -1,4 +1,4 @@
--- v1.0
+-- v1.0.1
 local json = dofile('/modules/json.lua')
 
 local updateModule = {
@@ -77,8 +77,10 @@ local updateModule = {
 
 		-- iterate through all local module versions
 		for module, version in pairs(self.versions) do
+			local uninstalled = not fs.exists('/modules/' .. module .. '.lua')
+
 			-- if local version doesn't match repository version, add name to table
-			if repositoryVersions[module] ~= nil and version ~= repositoryVersions[module] then
+			if uninstalled or (repositoryVersions[module] ~= nil and version ~= repositoryVersions[module]) then
 				modules[i] = module
 				i = i + 1
 			end
