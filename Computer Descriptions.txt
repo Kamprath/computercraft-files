@@ -1,7 +1,0 @@
-10	Command computer. Maps rednet messages to functions. Functions are executed when the computer receives their respective messages.
-39	Example system. Demonstrates proper file structure, module loading, and menu usage
-4	Prototype rail station computer
-7	Rednet repeater
-8	Rail system control server
-9	Personal mobile computer
-21	Module repository server
