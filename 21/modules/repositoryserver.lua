@@ -1,4 +1,4 @@
--- v0.1
+-- v1.0
 local protocol = 'modules'
 local hostname = 'repository'
 local modemSide = 'left'
@@ -127,6 +127,7 @@ local repositoryserver = {
 	end,
 
 	getVersions = function(self, args)
+		self.versions = self:getLocalVersions()
 		return json:encode(self.versions)
 	end
 }
