@@ -42,7 +42,7 @@ return {
 	end,
 
 	tp_amita_serverroom = function()
-		commands.exec('tp ' .. username .. ' 350 85 338')
+		commands.exec('tp ' .. username .. ' 351 85 337')
 	end,
 
 	tp_docks = function()
