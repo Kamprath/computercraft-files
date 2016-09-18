@@ -1,4 +1,4 @@
--- v1.0.2
+-- v1.1
 local Table = dofile('/modules/Table.lua')
 local terminal = dofile('/modules/terminal.lua')
 
@@ -60,6 +60,20 @@ local menuinterface = {
             self:draw()
             self:handleEvent(os.pullEvent())
         end
+    end,
+
+    --- Load a menu file stored in the '/menus' directory
+    -- @param title     The name of the menu file with the extension omitted
+    -- @param ...       (Optional) Arguments to pass to the menu file
+    -- @return          Returns the value returned by the menu file
+    load = function(title, ...)
+        local path = '/menus/' .. title .. '.lua'
+
+        if not fs.exists(path) then return end
+
+        return assert(
+            loadfile(path, getfenv())
+        )(...)
     end,
 
     close = function(self)
@@ -303,5 +317,7 @@ return {
         end
 
         return instance
-    end
+    end,
+
+    load = menuinterface.load
 }

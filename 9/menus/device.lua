@@ -4,7 +4,7 @@ return {
 	{'Lua Console', function()
 		term.clear()
 		term.setCursorPos(1, 1)
-		shell.run('lua')
+		shell.run("lua")
 	end},
 
 	{'Restart Command Server', function(menu)
