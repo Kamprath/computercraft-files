@@ -1,12 +1,4 @@
-local serverID = rednet.lookup('commands', 'command_server')
-if not serverID then
-	term.clear()
-	term.setCursorPos(1, 1)
-	print('Failed to reach command server.')
-	io.read()
-	os.shutdown()
-end
-
+local serverID = ...
 
 return {
 	{'Lua Console', function()

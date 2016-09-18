@@ -1,19 +1,13 @@
-local serverID = rednet.lookup('commands', 'command_server')
-if not serverID then
-	term.clear()
-	term.setCursorPos(1, 1)
-	print('Failed to reach command server.')
-	io.read()
-	os.shutdown()
-end
+local serverID = ...
+local protocol = 'commands'
 
 return {
-	{'Creative', function()
-		rednet.broadcast('mode_creative', 'commands')
+	{'Creative', function(menu)
+		rednet.send(serverID, 'mode_creative', protocol)
 	end},
 
-	{'Survival', function()
-		rednet.broadcast('mode_survival', 'commands')
+	{'Survival', function(menu)
+		rednet.send(serverID, 'mode_survival', protocol)
 	end},
 
 	{'Back', function(menu)
