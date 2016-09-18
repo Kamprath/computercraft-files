@@ -1,0 +1,12 @@
+
+-- dofile('/modules/railserver.lua'):init()
+rednet.open('right')
+
+while true do
+  local senderID, message = rednet.receive()
+  
+  if message == 'ping' then
+    rednet.send(senderID, 'pong')
+    print('[' .. textutils.formatTime(os.time(), true) ..'] Ping from ' .. senderID)
+  end
+end

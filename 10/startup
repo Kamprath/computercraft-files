@@ -1,0 +1,9 @@
+local rednetlistener = dofile('/modules/rednetlistener.lua')
+
+-- create rednetlistener instance for 'commands' protocol and pass it routes
+local listener = rednetlistener.new('commands', dofile('/routes.lua'))
+
+rednet.host('commands', 'command_server')
+
+-- start listening for rednet messages
+listener:listen()

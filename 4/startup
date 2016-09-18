@@ -1,0 +1,46 @@
+--[[ 
+
+Functions
+=========
+* Detects minecarts using a redstone signal from detector rail
+* Can be set to either 'park' or 'pass' mode
+* Switches its track position based on the mode that is set
+* Notifies command server when a cart passes through, parks, or departs
+* Reads a configuration to determine its detector side and redstone state required for 'pass' mode
+
+Command Server Communication
+============================
+The application communicates with the command server wireless over rednet. When the application is not awaiting a minecart, it awaits a rednet request from the command server. The application communicates its actions to the command server using rednet messages sent to the command server.
+
+Station Modes
+=============
+The station can be set to three modes. Each mode yields different behavior from the application. The three modes are 'park', 'pass', and 'listen'.
+
+When the station is in 'listen' mode, the application simply listens for a rednet message from the command server. When a rednet message containing a command is detected, the corresponding actions are performed by the application. Examples of commands are deploying the minecart and putting the application into park and pass modes.
+
+When the station is in 'park' mode, the rail position is switched to the park position and the application awaits detection of a minecart. Once a minecart has been detected, the application sends a rednet message to the command server indicating that the minecart has arrived, and the application returns to 'listen' mode.
+
+when the station is in 'pass' mode, the rail position is switched to let the minecart pass. The application awaits detection of a minecart. Once the cart has been detected, the application sends a rednet message to the command server indicating that the cart has arrived and the application returns to 'listen' mode.
+
+Cart Detection
+==============
+Minecarts are detected by awaiting a rednet signal on the side that has been configured to receive the detector signal. The application listens for the signal when the station is in 'pass' or 'park' mode. When a cart is detected, it notifies the command server via rednet message.
+
+The detector input side is specified in the application's configuration file.
+
+Configuration
+=============
+The application's configuration exists in a JSON configuration file. The configuration file stores:
+* Detector input side
+* Redstone status required to pass the cart (each setup differs)
+
+Configuration data is retrieved from the file when the application starts.
+
+Development
+===========
+1. Build configuration-loading and startup functionality
+2. Create rednet communication functionality
+3. Write functionality for each station mode
+
+--]] 
+
