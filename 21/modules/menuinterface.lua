@@ -1,4 +1,5 @@
 -- v1.1
+
 local Table = dofile('/modules/Table.lua')
 local terminal = dofile('/modules/terminal.lua')
 
@@ -45,6 +46,8 @@ local menuinterface = {
 
     menus = {},
 
+    --- Write the active menu to the screen
+    -- @param self
     show = function(self)
         self.data.window.width, self.data.window.height = term.getSize()
         self.data.menu.columnSize = self.data.window.width / 2
@@ -76,11 +79,15 @@ local menuinterface = {
         )(...)
     end,
 
+    --- Stop the menu and clear the screen
+    -- @param self
     close = function(self)
         self.data.running = false
         terminal.reset()
     end,
 
+    --- Display the previous menu stored in history
+    -- @param self
     back = function(self)
         local historySize = #self.data.menu.history
         local key = self.data.menu.history[historySize]
@@ -95,6 +102,8 @@ local menuinterface = {
         end
     end,
 
+    --- Write the header portion of the interface
+    -- @param self
     drawHeader = function(self)
         term.setCursorPos(1, 1);
         term.setBackgroundColor(colors.white)
@@ -109,12 +118,16 @@ local menuinterface = {
         term.setBackgroundColor(self.data.term.bgColor)
     end,
 
+    --- Write a message to the menu interface
+    --  @param self
     drawMessage = function(self)
         term.setCursorPos(3, self.data.window.height - 1)
         term.clearLine()
         self:cwrite(self.data.menu.message, colors.white)
     end,
 
+    --- Write menu interface to the screen
+    --  @param self
     drawMenu = function(self)
         local menu = self.menus[self.data.menu.key]
         local menuSize = Table.size(menu)
@@ -183,14 +196,20 @@ local menuinterface = {
         self.data.menu.selection = 1
     end,
 
+    --- Enable the menu header
     showTitle = function(self)
         self.useHeaders = true
     end,
+
+    --- Disable the menu header
     hideTitle = function(self)
         self.useHeaders = false
     end,
 
     --- Writes a string in a specific color
+    --  @param self
+    --  @param str      A string to write
+    --  @param color    (optional) String color
     cwrite = function(self, str, color)
         if (color == nil) then color = self.data.term.fgColor end
         if (term.isColor()) then term.setTextColor(color) end
@@ -198,6 +217,8 @@ local menuinterface = {
         if (term.isColor()) then term.setTextColor(self.data.term.fgColor) end
     end,
 
+    --- Call methods to draw all parts of the menu interface
+    --  @param self
     draw = function(self)
         term.clear()
 
@@ -209,6 +230,12 @@ local menuinterface = {
         self:drawMessage()
     end,
 
+    --- Respond to a user interaction
+    --  
+    --  Possible events are key presses, mouse clicks, and timer expiration.
+    --
+    --  @param self
+    --  @param ...   Event parameters
     handleEvent = function(self, ...)
         -- remove first argument from arguments table
         local eventType = table.remove(arg, 1)
@@ -268,11 +295,18 @@ local menuinterface = {
         end
     end,
 
+    --- Indicate a menu choice as selected
+    --  @param self 
+    --  @param position     The position of the menu choice
     select = function(self, position)
         self.data.menu.selection = position
         self:drawMenu()
     end,
 
+    --- Display a message
+    --  @param self
+    --  @param msg      Message text
+    --  @param duration (optional) Seconds to display the message for
     message = function(self, msg, duration)
         self.data.menu.message = msg
         self:drawMessage()
@@ -311,6 +345,7 @@ return {
     new = function(menu)
         local instance = menuinterface
 
+        -- if menu is provided, display it
         if menu ~= nil then
             instance:add('Main Menu', menu)
             instance:use('Main Menu')
