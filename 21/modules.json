@@ -1,7 +1,8 @@
 {
 	"split": "1.0.0",
 	"repositoryserver": "1.0.0",
-	"update": "1.0.1",
+	"update": "1.0.6",
 	"json": "20140920.13",
-	"menuinterface": "1.1"
+	"menuinterface": "1.1",
+	"rednetrpc": "0.3"
 }
