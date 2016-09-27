@@ -1,4 +1,4 @@
--- v0.1
+-- v0.3
 
 -- todo: move logging functionality from module repository server into its own module and use it in this module
 -- local log = dofile('/modules/log.lua')
@@ -16,7 +16,11 @@ local rednetrpc = {
 	-- indicates if the application is listening for procedure calls over rednet
 	listening = false,
 
-	init = function(self, procedures)
+	init = function(self, procedures, hostname)
+		if hostname ~= nil then 
+			self.hostname = hostname 
+		end
+
 		-- open rednet
 		if not self:open() then
 			return
@@ -70,7 +74,7 @@ local rednetrpc = {
 }
 
 return {
-	new = function(procedures)
-		return rednetrpc:init(procedures)
+	new = function(procedures, hostname)
+		return rednetrpc:init(procedures, hostname)
 	end
 }
