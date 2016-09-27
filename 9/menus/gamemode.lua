@@ -1,5 +1,4 @@
-local serverID = ...
-local protocol = 'commands'
+local serverID, protocol = ...
 
 return {
 	{'Creative', function(menu)

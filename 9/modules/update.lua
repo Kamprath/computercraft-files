@@ -1,4 +1,4 @@
--- v1.0.1
+-- v1.0.6
 local json = dofile('/modules/json.lua')
 
 local updateModule = {
@@ -21,6 +21,20 @@ local updateModule = {
 		if not data then return end
 
 		return data
+	end,
+
+	--- Opens rednet on the attached modem
+	--  @return 	Returns true if successful or false if not
+	openRednet = function()
+		local sides = {'left', 'right', 'front', 'back', 'top', 'bottom'}
+		for key, val in ipairs(sides) do
+			if peripheral.getType(sides[key]) == 'modem' then
+				rednet.open(sides[key])
+				return true
+			end
+		end
+
+		return false
 	end,
 
 	--- Looks up ID of repository host
@@ -130,16 +144,20 @@ local updateModule = {
 return function()
 	local self = updateModule
 
-	term.clear()
-	term.setCursorPos(2, 2)
 	print('Checking for updates...')
+
+	if not self.openRednet() then
+		print('Failed to update - no modem attached to this computer.')
+		sleep(1)
+		return
+	end
 
 	-- look up 'repository' computer
 	self.serverID = self:getRepositoryServerID()
 
 	if not self.serverID then
 		print('Failed to reach repository server.')
-		io.read()
+		sleep(1)
 		return
 	end
 
@@ -148,7 +166,7 @@ return function()
 
 	if not self.versions then
 		print('Failed to check for updates - modules.json was not found.')
-		io.read()
+		sleep(1)
 		return
 	end
 
@@ -158,7 +176,7 @@ return function()
 
 	if not repositoryVersions then
 		print('Failed to fetch data from repository.')
-		io.read()
+		sleep(1)
 		return
 	end
 
@@ -167,6 +185,7 @@ return function()
 
 	-- if array of names is greater than 0, prompt the user to update the system or ignore
 	if #oldModules == 0 then
+		print('System is up-to-date.')
 		return
 	end
 
@@ -194,7 +213,7 @@ return function()
 		-- update the versions table
 		self.versions[moduleName] = repositoryVersions[moduleName]
 
-		print('Updated module "' .. moduleName .. '"')
+		print('Updated module "' .. moduleName .. '" to v' .. self.versions[moduleName])
 	end
 
 	-- save versions table to /modules.json

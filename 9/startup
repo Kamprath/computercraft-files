@@ -1,5 +1,7 @@
 local menuinterface = dofile('/modules/menuinterface.lua')
 
+local protocol = 'rpc'
+
 -- mobile computer modems are always on back. Open rednet on modem.
 rednet.open('back')
 
@@ -11,7 +13,7 @@ update()
 term.clear()
 term.setCursorPos(2, 2)
 print('Connecting to server...')
-local serverID = rednet.lookup('commands', 'command_server')
+local serverID = rednet.lookup('rpc', 'command_server')
 if serverID == nil then
 	print('Failed to reach server.')
 	io.read()
@@ -23,7 +25,7 @@ local menu = menuinterface.new()
 local title = 'Commander'
 
 -- Add menu data from /menus/main.lua to menuinterface
-menu:add(title, menuinterface.load('main', serverID))
+menu:add(title, menuinterface.load('main', serverID, protocol))
 
 -- Tell menuinterface to use the menu
 menu:use(title)

@@ -1,4 +1,4 @@
-local serverID = ...
+local serverID, protocol = ...
 
 return {
 	{'Lua Console', function()
@@ -8,7 +8,7 @@ return {
 	end},
 
 	{'Restart Command Server', function(menu)
-		rednet.send(serverID, 'restart', 'commands')
+		rednet.send(serverID, 'restart', protocol)
 		menu:message('Server restarted.', 2)
 	end},
 
