@@ -1,30 +1,31 @@
+local fileRoot = '/disk/system'
+
 local files = {
-	'/disk/files/startup',
-	'/disk/files/modules/update.lua',
-	'/disk/files/modules/json.lua',
-	'/disk/files/modules.json'
+	'/startup',
+	'/modules/update.lua',
+	'/modules/json.lua',
+	'/modules.json'
 }
 
 local drive = peripheral.find('drive')
 
 -- Prompt user to install files
 print('Install system files? (y/n): ')
-local input = io.read()
-if input ~= 'y' then
+if io.read() ~= 'y' then
 	drive.ejectDisk()
 	return
 end
 
 -- Iterate through file mappings. Check if each file exists at the target path. If a file does not exist, copy it to its target path.
-for key, diskPath in ipairs(files) do
-	local computerPath = string.gsub(diskPath, '/disk/files', '')
+for key, path in ipairs(files) do
+	local diskPath = fileRoot .. path
 
-	if not fs.exists(computerPath) then
-		fs.copy(diskPath, computerPath)
+	if not fs.exists(path) then
+		fs.copy(diskPath, path)
 	end
 end
 
--- Inject update code into first line of startup script
+-- Inject system-updating code into startup script
 local updateCode = "(dofile('/modules/update.lua'))()"
 function open(mode)
 	return fs.open('/startup', mode)
