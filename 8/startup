@@ -1,3 +1,4 @@
+(dofile('/modules/update.lua'))()
 
 -- dofile('/modules/railserver.lua'):init()
 rednet.open('right')

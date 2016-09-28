@@ -2,8 +2,8 @@
 
 local rednetrpc = dofile('/modules/rednetrpc.lua')
 
--- create rednetlistener instance for 'commands' protocol and pass it routes
+-- create instance of the RPC server and use hostname 'command_server'
 local rpcServer = rednetrpc.new(dofile('/procedures.lua'), 'command_server')
 
--- start listening for rednet messages
+-- start listening for RPC commands over rednet
 rpcServer:listen()
