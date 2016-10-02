@@ -1,3 +1,5 @@
+-- v0.1
+
 local split = dofile('/modules/split.lua')
 local menuinterface = dofile('/modules/menuinterface.lua')
 local protocol = 'tnt_turtle'

@@ -1,3 +1,5 @@
+-- v0.1
+
 local split = dofile('/modules/split.lua')
 
 local module = {
@@ -34,10 +36,11 @@ local module = {
 	--- Calibrate turtle position on X-Y coordinate plane
 	calibrate = function(self)
 		 -- get position
-		local originX, originY, originZ
+		originX, originY, originZ = gps.locate(5)
 
-		while originX == nil do
-			originX, originY, originZ = gps.locate()
+		if originX == nil then
+			print('* Failed to reach GPS host.')
+			return
 		end
 
 		 -- move forward one
@@ -46,7 +49,7 @@ local module = {
 		-- get position
 		local newX, newY, newZ
 		while newX == nil do
-			newX, newY, newZ = gps.locate()
+			newX, newY, newZ = gps.locate(5)
 		end
 		sleep(.5)
 
@@ -70,20 +73,23 @@ local module = {
 		end
 
 		self.axis.forward = true
+		print('* Calibrated.')
 	end,
 
 	moveTo = function(self, x, y, z)
-		local currentX, currentY, currentZ = gps.locate()
+		local currentX, currentY, currentZ = gps.locate(5)
+		if currentX == nil then
+			print('* Failed to reach GPS host.')
+			return
+		end
 
 		-- move to Z position
 		if z > currentZ then
-			print('* Turtle moving ' .. (z - currentZ) .. ' blocks up')
 			while currentZ < z do
 				turtle.up()
 				currentZ = currentZ + 1
 			end
 		else
-			print('* Turtle moving ' .. (currentZ - y) .. ' blocks down')
 			while currentZ > z do
 				turtle.down()
 				currentZ = currentZ - 1
@@ -160,22 +166,29 @@ local module = {
 	end,
 
 	forward = function()
-		if turtle.detect() then
-			rednet.broadcast('Turtle is obstructed!', 'tnt_turtle')
-			print('* Turtle is obstructed')
-			return false
-		end
 		if turtle.getFuelLevel() == 0 then
 			rednet.broadcast('Turtle is out of fuel.', 'tnt_turtle')
 			print('* Turtle out of fuel')
 			return false
 		end
-		return turtle.forward()
+
+		while not turtle.forward() do
+			rednet.broadcast('Turtle is obstructed!', 'tnt_turtle')
+			print('* Turtle is obstructed')
+			sleep(2)
+		end
+
+		return true
 	end,
 
 	drop = function(self, x, y, z)
 		local currentX, currentY, currentZ = gps.locate(3)
-		local climb = 10
+		if currentX == nil then
+			print('* Failed to reach GPS host.')
+			return
+		end
+
+		local climb = 20
 
 		if currentX ~= nil then 
 			if self:moveTo(x, y, z+climb) then
@@ -203,6 +216,7 @@ local module = {
 
 	move = function(self, x, y, z)
 		local climb = 10
+		self:calibrate()
 		self:moveTo(x, y, z+climb)
 
 		local i = z+climb
