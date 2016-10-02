@@ -40,5 +40,9 @@ return {
 		local title = 'Device Menu'
 		menu:add(title, menuinterface.load('device', serverID, protocol))
 		menu:use(title)
+	end},
+
+	{'Exit', function(menu)
+		menu:back()
 	end}
 }
