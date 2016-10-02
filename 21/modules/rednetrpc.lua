@@ -1,5 +1,4 @@
--- v0.4.11
-
+-- v0.4.13
 local log = dofile('/modules/log.lua')
 local split = dofile('/modules/split.lua')
 
@@ -38,6 +37,16 @@ local rednetrpc = {
 			self:registerProcedures(procedures)
 		end
 
+		-- if procedures.lua file exists, register its procedures
+		if fs.exists('/procedures.lua') then
+			local data = dofile('/procedures.lua')
+			if type(data) == 'table' then
+				self:registerProcedures(data)
+			end
+		end
+
+		self:registerHelpProcedures()
+
 		return self
 	end,
 
@@ -46,9 +55,12 @@ local rednetrpc = {
 			self.procedures[name] = func
 			log('Registered procedure ' .. name)
 		end
+	end,
+
+	registerHelpProcedures = function(self)
 		local list = function(args)
 			local msg = ''
-			for key, val in pairs(procedures) do
+			for key, val in pairs(self.procedures) do
 				msg = msg .. '\t ' .. key .. '\n'
 			end
 			return msg
