@@ -69,6 +69,11 @@ return {
 		return 'true'
 	end,
 
+	tp_gps_cluster = function()
+		commands.exec('tp ' .. username .. ' 359 256 323')
+		return 'true'
+	end,
+
 	restart = function()
 		os.reboot()
 	end
