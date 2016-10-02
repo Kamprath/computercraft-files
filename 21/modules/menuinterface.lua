@@ -68,7 +68,7 @@ local menuinterface = {
     --- Load a menu file stored in the '/menus' directory
     -- @param title     The name of the menu file with the extension omitted
     -- @param ...       (Optional) Arguments to pass to the menu file
-    -- @return          Returns the value returned by the menu file
+    -- @return          Returns the menu object returned by the menu file
     load = function(title, ...)
         local path = '/menus/' .. title .. '.lua'
 
