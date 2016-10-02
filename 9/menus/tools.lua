@@ -1,10 +1,16 @@
 local serverID, protocol = ...
 
+local rpcclient = dofile('/modules/rpcclient.lua')
+
 return {
 	{'Lua Console', function()
 		term.clear()
 		term.setCursorPos(1, 1)
 		shell.run("lua")
+	end},
+
+	{'RPC Client', function(menu)
+		rpcclient(nil, menu)
 	end},
 
 	{'Restart Command Server', function(menu)
@@ -24,10 +30,6 @@ return {
 				menu:message('Out of range.')
 			end
 		end
-	end},
-
-	{'Shutdown', function()
-		os.shutdown()
 	end},
 
 	{'Back', function(menu)

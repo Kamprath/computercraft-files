@@ -1,6 +1,7 @@
+local serverID, protocol = ...
+
 local menuinterface = dofile('/modules/menuinterface.lua')
 local tntturtleremote = dofile('/modules/tntturtleremote.lua')
-local serverID, protocol = ...
 
 return {
 	-- Load gamemode menu
@@ -31,14 +32,14 @@ return {
 		menu:use(title)
 	end},
 
-	{'TNT Turtle', function(menu)
+	{'TNT Turtles', function(menu)
 		tntturtleremote(menu)
 	end},
 
-	-- Load the device menu
-	{'Device', function(menu)
-		local title = 'Device Menu'
-		menu:add(title, menuinterface.load('device', serverID, protocol))
+	-- Load the tools menu
+	{'Tools', function(menu)
+		local title = 'Tools'
+		menu:add(title, menuinterface.load('tools', serverID, protocol))
 		menu:use(title)
 	end},
 

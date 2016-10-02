@@ -1,4 +1,4 @@
--- v1.0.6
+-- v1.0.7
 local json = dofile('/modules/json.lua')
 
 local updateModule = {
@@ -175,7 +175,7 @@ return function()
 	local repositoryVersions = self:getRepositoryVersions()
 
 	if not repositoryVersions then
-		print('Failed to fetch data from repository.')
+		print('Failed to reach repository server.')
 		sleep(1)
 		return
 	end
