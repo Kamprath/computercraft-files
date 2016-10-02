@@ -5,6 +5,7 @@ local modemSide = 'left'
 
 local split = dofile('/modules/split.lua')
 local json = dofile('/modules/json.lua')
+local log = dofile('/modules/log.lua')
 
 local repositoryserver = {
 	versions = nil,
@@ -21,15 +22,15 @@ local repositoryserver = {
 		print('Started module repository server.\n')
 
 		rednet.open(modemSide)
-		self:log('Opened modem on ' .. modemSide .. ' side', 2)
+		log('Opened modem on ' .. modemSide .. ' side', 2)
 
 		rednet.host(protocol, hostname)
-		self:log('Host set to "' .. hostname .. '" on "' .. protocol .. '" protocol', 2)
+		log('Host set to "' .. hostname .. '" on "' .. protocol .. '" protocol', 2)
 
 		self.versions = self:getLocalVersions()
-		self:log('Loaded versions', 2)
+		log('Loaded versions', 2)
 
-		self:log('Listening...', 2)
+		log('Listening...', 2)
 
 		-- await and respond to rednet messsages
 		while true do
@@ -41,7 +42,7 @@ local repositoryserver = {
 			
 			-- execute method that is mapped to the first word of a rednet message
 			if self.routes[action] ~= nil then
-				self:log('Action "' .. action .. '" requested from client ' .. senderID)
+				log('Action "' .. action .. '" requested from client ' .. senderID)
 				
 				local response = self[self.routes[action]](self, args)
 
@@ -50,32 +51,6 @@ local repositoryserver = {
 					rednet.send(senderID, response, protocol)
 				end
 			end
-		end
-	end,
-
-	log = function(self, message, level)
-		level = level or 1
-		local levels = {
-			colors.white,
-			colors.lime,
-			colors.red
-		}
-		local originalColor = term.getTextColor()
-		local colorChanged = (levels[level] ~= originalColor)
-
-		io.write('*')
-		term.setTextColor(colors.yellow)
-		io.write(' [' .. textutils.formatTime(os.time(), true) .. '] ')
-		term.setTextColor(originalColor)
-
-		if levels[level] ~= nil and colorChanged then
-			term.setTextColor(levels[level])
-		end
-
-		io.write(message .. '\n')
-
-		if colorChanged then
-			term.setTextColor(originalColor)
 		end
 	end,
 
@@ -102,7 +77,7 @@ local repositoryserver = {
 
 	getModule = function(self, args)
 		if #args <= 1 then 
-			self:log('Error: No module name was provided', 3)
+			log('Error: No module name was provided', 3)
 			return
 		end
 
@@ -113,7 +88,7 @@ local repositoryserver = {
 
 		-- make sure module exists in /modules
 		if not fs.exists('/modules/' .. moduleName .. '.lua') then 
-			self:log('Error: Source file for module "' .. moduleName .. '" does not exist.', 3)
+			log('Error: Source file for module "' .. moduleName .. '" does not exist.', 3)
 			return 
 		end
 

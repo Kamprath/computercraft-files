@@ -4,5 +4,6 @@
 	"update": "1.0.6",
 	"json": "20140920.13",
 	"menuinterface": "1.1",
-	"rednetrpc": "0.3"
+	"rednetrpc": "0.3",
+	"log": "1.0"
 }
