@@ -1,0 +1,4 @@
+local tntturtle = dofile('/modules/tntturtle.lua')
+
+local turtle = tntturtle.new()
+turtle:listen()

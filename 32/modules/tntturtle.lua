@@ -1,5 +1,3 @@
--- v0.1
-
 local split = dofile('/modules/split.lua')
 
 local module = {
@@ -172,10 +170,10 @@ local module = {
 			return false
 		end
 
-		while not turtle.forward() do
+		if not turtle.forward() then
 			rednet.broadcast('Turtle is obstructed!', 'tnt_turtle')
 			print('* Turtle is obstructed')
-			sleep(2)
+			return false
 		end
 
 		return true
@@ -188,7 +186,7 @@ local module = {
 			return
 		end
 
-		local climb = 20
+		local climb = 10
 
 		if currentX ~= nil then 
 			if self:moveTo(x, y, z+climb) then
@@ -216,7 +214,6 @@ local module = {
 
 	move = function(self, x, y, z)
 		local climb = 10
-		self:calibrate()
 		self:moveTo(x, y, z+climb)
 
 		local i = z+climb

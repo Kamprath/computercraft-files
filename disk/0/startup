@@ -2,6 +2,7 @@ local fileRoot = '/disk/system'
 
 local files = {
 	'/startup',
+	'/install',
 	'/modules/update.lua',
 	'/modules/json.lua',
 	'/modules.json'

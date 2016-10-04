@@ -21,6 +21,10 @@ return {
 		rednet.send(serverID, 'tp_quartier_de_lagnol', protocol)
 	end},
 
+	{'GPS Cluster', function()
+		rednet.send(serverID, 'tp_gps_cluster', protocol)
+	end},
+
 	{'Back', function(menu)
 		menu:back()
 	end}
