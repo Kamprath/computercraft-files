@@ -1,10 +1,10 @@
 {
-	"split": "1.0.2",
-	"repositoryserver": "1.0.0",
-	"update": "1.0.7",
+	"split": "1.0.3",
+	"repositoryserver": "0.1.1",
+	"update": "1.0.8",
 	"json": "20140920.13",
-	"menuinterface": "1.1",
-	"rednetrpc": "0.4.11",
-	"rpcclient": "0.3",
-	"log": "1.0"
+	"menuinterface": "1.1.1",
+	"rednetrpc": "0.4.14",
+	"rpcclient": "0.3.1",
+	"log": "1.0.1"
 }

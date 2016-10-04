@@ -1,5 +1,16 @@
--- v1.0
-return function(message, level)
+-----------------------------------------------------------------------------
+--  Logs formatted console messages.
+--
+--	Version: 1.0.1
+-----------------------------------------------------------------------------
+
+--- Prints a formatted message to the console
+-- @param message 	The message to display
+-- @param level		(Optional) A number indicating the message level
+--					  1 - (default) Standard message
+--					  2 - Success message
+--					  3 - Error message
+function log(message, level)
 	level = level or 1
 	local levels = {
 		colors.white,
@@ -24,3 +35,5 @@ return function(message, level)
 		term.setTextColor(originalColor)
 	end
 end
+
+return log

@@ -1,4 +1,15 @@
--- v1.1
+-----------------------------------------------------------------------------  
+--  Displays menu interfaces that allow a user to navigate through menus and
+--  select options that execute functions.
+--
+--  Menus are defined in lua files that return a table of tables containing 
+--  the menu option title as the first element and their corresponding 
+--  function as the second element. Each of these functions may accept a
+--  'menu' parameter that refers to the menuinterface instance.
+--
+--  Version: 1.1.1
+--  Dependencies: Table, terminal
+-----------------------------------------------------------------------------
 
 local Table = dofile('/modules/Table.lua')
 local terminal = dofile('/modules/terminal.lua')

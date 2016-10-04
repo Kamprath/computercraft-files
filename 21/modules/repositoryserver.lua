@@ -1,4 +1,11 @@
--- v1.0
+-----------------------------------------------------------------------------
+--	A module repository server that serves module versions and source
+--	code over rednet.
+--
+--	Version: 0.1.1
+--	Dependencies: split, json, log
+-----------------------------------------------------------------------------
+
 local protocol = 'modules'
 local hostname = 'repository'
 local modemSide = 'left'
