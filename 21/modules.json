@@ -3,8 +3,12 @@
 	"repositoryserver": "1.0.0",
 	"update": "1.0.7",
 	"json": "20140920.13",
-	"menuinterface": "1.1",
-	"rednetrpc": "0.4.11",
+	"menuinterface": "1.1.2",
+	"rednetrpc": "0.4.13",
 	"rpcclient": "0.3",
-	"log": "1.0"
+	"log": "1.0",
+	"turtle": "0.1.8",
+	"turtleclient": "0.1",
+	"tntturtle": "0.1.1",
+	"install": "0.2.2"
 }
