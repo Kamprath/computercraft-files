@@ -1,4 +1,10 @@
--- v1.0.7
+-----------------------------------------------------------------------------
+--	Checks for newer module versions and downloads updates.
+--
+--	Version: 1.0.8
+--	Dependencies: json
+-----------------------------------------------------------------------------
+
 local json = dofile('/modules/json.lua')
 
 local updateModule = {

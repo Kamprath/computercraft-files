@@ -1,3 +1,11 @@
+-----------------------------------------------------------------------------
+--	Verifies that specific modules are installed and attempts to install any 
+--	that are missing from the system.
+--
+--	Version: 0.1
+--	Dependencies: update, json
+-----------------------------------------------------------------------------
+
 local args = {...}
 
 if #args == 0 then

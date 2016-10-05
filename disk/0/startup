@@ -1,3 +1,11 @@
+-----------------------------------------------------------------------------
+--	This program will copy system files from the '/system' directory
+--	onto the computer. If the computer contains a 'startup' file,
+--	this program will inject code that updates the system on startup.
+--
+--	Version: 0.1
+-----------------------------------------------------------------------------
+
 local fileRoot = '/disk/system'
 
 local files = {

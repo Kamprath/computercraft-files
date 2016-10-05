@@ -1,4 +1,9 @@
--- v0.3
+-----------------------------------------------------------------------------
+--  Provides a console for interaction with a rednet RPC server.
+--
+--	Version: 0.3.1
+--	Dependencies: log, menuinterface
+-----------------------------------------------------------------------------
 
 local log = dofile('/modules/log.lua')
 local menuinterface = dofile('/modules/menuinterface.lua')
