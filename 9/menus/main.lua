@@ -1,7 +1,6 @@
 local serverID, protocol = ...
 
 local menuinterface = dofile('/modules/menuinterface.lua')
-local tntturtleremote = dofile('/modules/tntturtleremote.lua')
 
 return {
 	-- Load gamemode menu
@@ -30,10 +29,6 @@ return {
 		local title = 'Change Weather'
 		menu:add(title, menuinterface.load('weather', serverID, protocol))
 		menu:use(title)
-	end},
-
-	{'TNT Turtles', function(menu)
-		tntturtleremote(menu)
 	end},
 
 	-- Load the tools menu
