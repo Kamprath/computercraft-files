@@ -1,8 +1,13 @@
--- v0.1
+-- v0.2
+
+-- install any missing modules
+(dofile('/modules/install.lua'))('split', 'menuinterface', 'log', 'repositoryserver')
 
 local split = dofile('/modules/split.lua')
 local menuinterface = dofile('/modules/menuinterface.lua')
-local protocol = 'tnt_turtle'
+local log = dofile('/modules/log.lua')
+
+local protocol = 'rpc'
 
 local module = {
 	menu = nil,
@@ -23,7 +28,7 @@ local module = {
 			x, y, z = gps.locate()
 		end
 
-		rednet.broadcast('drop ' .. x .. ' ' .. y .. ' ' .. z, protocol)
+		rednet.broadcast('bomb ' .. x .. ' ' .. y .. ' ' .. z, protocol)
 
 		self.listen()
 	end,

@@ -1,6 +1,7 @@
 local serverID, protocol = ...
 
 local rpcclient = dofile('/modules/rpcclient.lua')
+local tntturtleremote = dofile('/modules/tntturtleremote.lua')
 
 return {
 	{'Lua Console', function()
@@ -11,6 +12,10 @@ return {
 
 	{'RPC Client', function(menu)
 		rpcclient(nil, menu)
+	end},
+
+	{'TNT Turtle Remote', function(menu)
+		tntturtleremote(menu)
 	end},
 
 	{'Restart Command Server', function(menu)
