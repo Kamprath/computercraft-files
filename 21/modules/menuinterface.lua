@@ -1,4 +1,4 @@
--- v1.1
+-- v1.1.2
 
 local Table = dofile('/modules/Table.lua')
 local terminal = dofile('/modules/terminal.lua')
@@ -267,6 +267,13 @@ local menuinterface = {
         elseif (eventType == 'mouse_click') then
             local choice = self:getChoiceClicked(arg[2], arg[3]);
             if (choice) then
+                -- Select the menu item that was clicked
+                self:select(
+                    Table.position(choice, self.menus[self.data.menu.key])
+                )
+
+                self:draw()
+
                 -- briefly highlight the clicked text
                 local restoreColor = term.getTextColor()
                 term.setCursorPos(choice.coords[1][1], choice.coords[1][2])
@@ -279,11 +286,6 @@ local menuinterface = {
                     end
                 end
                 sleep(.12) 
-
-                -- Select the menu item that was clicked
-                self:select(
-                    Table.position(choice, self.menus[self.data.menu.key])
-                )
 
                 choice[2](self);
             end
