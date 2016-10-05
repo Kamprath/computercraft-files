@@ -1,4 +1,7 @@
-local tntturtle = dofile('/modules/tntturtle.lua')
+(dofile('/modules/update.lua'))()
+-- local tntturtle = dofile('/modules/tntturtle.lua')
+-- local turtle = tntturtle.new()
+-- turtle:listen()
 
-local turtle = tntturtle.new()
-turtle:listen()
+local turtle = dofile('/modules/turtle.lua')
+turtle()

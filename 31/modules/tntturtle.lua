@@ -1,6 +1,9 @@
-local split = dofile('/modules/split.lua')
+-- v0.1.1
 
-local module = {
+local split = dofile('/modules/split.lua')
+local log = dofile('/modules/log.lua')
+
+return {
 	axis = {
 		x = false, 
 		y = false,
@@ -11,24 +14,6 @@ local module = {
 		rednet.open('left')
 		redstone.setOutput('bottom', true)
 		self:calibrate()
-		return self
-	end,
-
-	listen = function(self)
-		while true do
-			print('* Awaiting command...')
-			local senderID, msg = rednet.receive('tnt_turtle')
-
-			local args = split(msg)
-
-			if args[1] == 'drop' and #args == 4 then
-				self:drop(tonumber(args[2]), tonumber(args[3]), tonumber(args[4]))
-				rednet.send(senderID, 'ok', 'tnt_turtle')
-			elseif args[1] == 'move' and #args == 4 then
-				self:move(tonumber(args[2]), tonumber(args[3]), tonumber(args[4]))
-				rednet.send(senderID, 'Turtle returned home.', 'tnt_turtle')
-			end
-		end
 	end,
 
 	--- Calibrate turtle position on X-Y coordinate plane
@@ -37,7 +22,7 @@ local module = {
 		originX, originY, originZ = gps.locate(5)
 
 		if originX == nil then
-			print('* Failed to reach GPS host.')
+			log('Failed to reach GPS host.', 3)
 			return
 		end
 
@@ -71,13 +56,13 @@ local module = {
 		end
 
 		self.axis.forward = true
-		print('* Calibrated.')
+		log('Calibrated GPS position', 2)
 	end,
 
 	moveTo = function(self, x, y, z)
 		local currentX, currentY, currentZ = gps.locate(5)
 		if currentX == nil then
-			print('* Failed to reach GPS host.')
+			log('Failed to reach GPS host.', 3)
 			return
 		end
 
@@ -166,13 +151,13 @@ local module = {
 	forward = function()
 		if turtle.getFuelLevel() == 0 then
 			rednet.broadcast('Turtle is out of fuel.', 'tnt_turtle')
-			print('* Turtle out of fuel')
+			log('Turtle out of fuel', 3)
 			return false
 		end
 
 		if not turtle.forward() then
 			rednet.broadcast('Turtle is obstructed!', 'tnt_turtle')
-			print('* Turtle is obstructed')
+			log('Turtle is obstructed', 3)
 			return false
 		end
 
@@ -182,7 +167,7 @@ local module = {
 	drop = function(self, x, y, z)
 		local currentX, currentY, currentZ = gps.locate(3)
 		if currentX == nil then
-			print('* Failed to reach GPS host.')
+			log('Failed to reach GPS host.', 3)
 			return
 		end
 
@@ -223,11 +208,5 @@ local module = {
 		end
 
 		self:calibrate()
-	end
-}
-
-return {
-	new = function()
-		return module:init()
 	end
 }
