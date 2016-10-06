@@ -1,4 +1,4 @@
--- v0.1.9
+-- v0.1.10
 
 local log = dofile('/modules/log.lua')
 local rpc = dofile('/modules/rednetrpc.lua')
@@ -103,7 +103,12 @@ local module = {
                 turtle.drop()
                 return 'true'
             -- end
-        end
+        end,
+
+        attack = function(args)
+            turtle.attack()
+            return 'true'
+        end,
     },
 
     init = function(self, hostname)
