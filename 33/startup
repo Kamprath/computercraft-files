@@ -4,4 +4,4 @@
 -- turtle:listen()
 
 local turtle = dofile('/modules/turtle.lua')
-turtle()
+turtle('xbox-turtle')

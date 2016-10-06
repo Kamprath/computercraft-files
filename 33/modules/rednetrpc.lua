@@ -1,8 +1,14 @@
--- v0.4.13
+-----------------------------------------------------------------------------
+--	An RPC server that executes procedures requested over the rednet 'rpc'
+--	protocol.
+--
+--	Version: 0.4.14
+--	Dependencies: log, split
+-----------------------------------------------------------------------------
+
 local log = dofile('/modules/log.lua')
 local split = dofile('/modules/split.lua')
 
---- This application acts as an RPC server over rednet.
 local rednetrpc = {
 	
 	-- rednet host info
