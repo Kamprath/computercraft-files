@@ -1,15 +1,16 @@
 -----------------------------------------------------------------------------
---	Verifies that specific modules are installed and attempts to install any 
---	that are missing from the system.
---
+--	Installs modules
+--	
+-- 	Usage: install <module name> [module names]
+-- 
 --	Version: 0.1
---	Dependencies: update, json
+--	Dependencies: install.lua
 -----------------------------------------------------------------------------
 
 local args = {...}
 
 if #args == 0 then
-	print('Usage: install <module name> [, ...]')
+	print('Usage: install <module name> [module names]')
 	return
 end
 
