@@ -1,0 +1,19 @@
+-----------------------------------------------------------------------------
+--	Installs modules
+--	
+-- 	Usage: install <module name> [module names]
+-- 
+--	Version: 0.1
+--	Dependencies: install.lua
+-----------------------------------------------------------------------------
+
+local args = {...}
+
+if #args == 0 then
+	print('Usage: install <module name> [module names]')
+	return
+end
+
+local install = dofile('/modules/install.lua')
+
+install(args)
