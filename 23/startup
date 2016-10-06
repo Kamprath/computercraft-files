@@ -1,1 +1,5 @@
 (dofile('/modules/update.lua'))()
+
+local xboxturtle = dofile('/modules/xboxturtle.lua')
+
+xboxturtle()
