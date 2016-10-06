@@ -8,7 +8,7 @@
 -- 	module did not exist on a computer, the user would be prompted to install
 -- 	them.
 --
---	Version: 0.2.9
+--	Version: 0.2.8
 --	Dependencies: update, json
 -----------------------------------------------------------------------------
 
@@ -25,9 +25,7 @@ local module = {
 
 		-- add missing modules to a table
 		for key, moduleName in ipairs(args) do
-			if type(moduleName) == 'table' then
-				moduleName = moduleName[1]
-			end
+			moduleName = moduleName[1]
 
 			print('* ' .. moduleName)
 			

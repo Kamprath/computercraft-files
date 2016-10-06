@@ -1,6 +1,9 @@
 (dofile('/modules/update.lua'))()
 
 -- dofile('/modules/railserver.lua'):init()
+
+print('Listening for pings...')
+
 rednet.open('right')
 
 while true do
