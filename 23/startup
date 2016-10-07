@@ -1,5 +1,5 @@
 (dofile('/modules/update.lua'))()
 
-local xboxturtle = dofile('/modules/xboxturtle.lua')
+local xboxinput = dofile('/modules/xbox-input.lua')
 
-xboxturtle()
+xboxinput('/input', 'drone_1')
