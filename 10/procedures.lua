@@ -74,6 +74,19 @@ return {
 		return 'true'
 	end,
 
+	tp = function(args)
+		if not args[2] or not args[3] or not args[4] then
+			return 'X, Y, and Z coordinates required'
+		end
+
+		if not tonumber(args[2]) or not tonumber(args[3]) or not tonumber(args[4]) then
+			return 'X, Y, and Z coordinates must be numeric values'
+		end
+
+		commands.exec('tp ' .. username .. ' ' .. args[2] .. ' ' .. args[3] .. ' ' .. args[4])
+		return 'true'
+	end,
+
 	restart = function()
 		os.reboot()
 	end

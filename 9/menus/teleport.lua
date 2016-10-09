@@ -25,6 +25,26 @@ return {
 		rednet.send(serverID, 'tp_gps_cluster', protocol)
 	end},
 
+	{'Enter Coordinates...', function(menu)
+		term.clear()
+		term.setCursorPos(1, 1)
+		
+		io.write('X: ')
+		local x = io.read()
+
+		io.write('Y: ')
+		local y = io.read()
+
+		io.write('Z: ')
+		local z = io.read()
+
+		if x and y and z then
+			rednet.send(serverID, 'tp ' .. x .. ' ' .. y .. ' ' .. z, protocol)
+		end
+
+		menu:message('Teleported.', 2)
+	end},
+
 	{'Back', function(menu)
 		menu:back()
 	end}
