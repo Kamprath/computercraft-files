@@ -8,7 +8,7 @@
 -- 	module did not exist on a computer, the user would be prompted to install
 -- 	them.
 --
---	Version: 0.2.8
+--	Version: 0.2.9
 --	Dependencies: update, json
 -----------------------------------------------------------------------------
 
@@ -25,18 +25,16 @@ local module = {
 
 		-- add missing modules to a table
 		for key, moduleName in ipairs(args) do
-			moduleName = moduleName[1]
+			if type(moduleName) == 'table' then
+				moduleName = moduleName[1]
+			end
 
 			print('* ' .. moduleName)
 			
 			if not fs.exists('/modules/' .. moduleName .. '.lua') then
-				modules[moduleName] = "yee"
-				print('* Added ' .. moduleName .. ' to install list')
+				modules[moduleName] = ""
 			end
 		end
-
-		print('* modules to install:')
-		textutils.tabulate(colors.lime, modules)
 
 		-- update modules.json and run update
 		if #modules > 0 then
@@ -46,9 +44,6 @@ local module = {
 			for key, val in pairs(modules) do
 				self.versions[key] = val
 			end
-
-			print('Versions:')
-			textutils.tabulate(colors.lime, self.versions)
 
 			-- save modules.json
 			self:saveVersions()
