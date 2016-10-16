@@ -1,16 +1,12 @@
 local serverID, protocol = ...
 
+local menuinterface = dofile('/modules/menuinterface.lua')
+
 return {
-	{'City Entrance', function()
-		rednet.send(serverID, 'tp_amita_entrance', protocol)
-	end},
-
-	{'Server Room', function()
-		rednet.send(serverID, 'tp_amita_serverroom', protocol)
-	end},
-
-	{'Docks', function()
-		rednet.send(serverID, 'tp_docks', protocol)
+	{'Amida...', function(menu)
+		local title = 'Amida Locations' 
+		menu:add(title, menuinterface.load('teleport_amida', serverID, protocol))
+		menu:use(title)
 	end},
 
 	{'Farm', function()
