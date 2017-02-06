@@ -13,25 +13,16 @@ Computers
 | [21](https://github.com/Kamprath/computercraft-files/tree/master/21)      | Module Repository Server   | Hosts module files. Other systems can query for module versions and download module source code over rednet.    |
 | 25-28                                                                     | GPS Host                   | Computers acting as hosts in a GPS cluster                                                                      |
 | [30](https://github.com/Kamprath/computercraft-files/tree/master/21)      | TNT Turtle                 | Turtle that receives GPS coordinates over rednet and drops TNT at the position.                                 |
-| [39](https://github.com/Kamprath/computercraft-files/tree/master/39)      | Demo System                | Demonstrates proper file structure, module loading, and menu usage                                              |
  
 
 Contents
 ========
 1.  **Technical Guides**
-    -   The Framework (describe how the OS works)
-        -   Overview
-        -   Installation & Setup
-        -   Components
-            -   Files & Directory Structure
-            -   Modules (structure and document core modules)
-            -   Menus
-            -   Startup Script
-    -   Writing Programs
-        -   Program Structure
-        -   Using Modules
-        -   Using Menus
-        -   Repository
+    -   The Framework
+        -   Installation
+        -   Files and Directories
+        -   Modules
+        -   Menus
     -   The Module Repository
         -   Versioning
         -   The `update` Module
@@ -43,32 +34,58 @@ Contents
         -   GPS System
         -   Remote Control Program
 
+
 The Framework
 =============
-
-Overview
---------
 
 -   All computers share core modules and a common file structure 
 -   Each system is configured differently
 -   Framework provides a platform for writing programs that can be run on any computer that has the framework installed
 -   Programs can be run on all computers that have the framework
 
+
+Installation
+------------
+
+1.  Attach a disk drive to the computer you're installing the framework on.
+
+2.  Insert disk 0 and then start the computer.
+
+3.  The disk's [startup script](https://github.com/Kamprath/computercraft-files/tree/master/disk/0/startup) will copy framework 
+    files to the computer. If a `startup` script already exists on the computer, code will be injected into it to check for
+    module updates on startup.
+
+
+Files and Directories
+---------------------
+
+-   **`menus/`**   
+    This directory contains menu files. Menus contain a list of options that are bound to functions. Programs use the 
+    `menuinterface` module to load menus from this directory. See the Menus section for more details about writing and using
+    menus.
+
+-   **`modules/`**   
+    Modules reside in this directory. Modules are imported from this directory using `dofile('/modules/...')`.
+
+-   **`startup`**   
+    The `startup` file is run when a computer boots. The framework uses this file to check for updates. Custom code should be 
+    added to this file to determine what a computer will do on startup, such as displaying a menu or launching another script.
+
+-   **`modules.json`**   
+    This file contains a JSON object indicating installed module versions. This file is used by the `update` module to compare
+    local versions with the repository.
+
+
 Modules
-=======
+-------
 
-Most of the code in this repository is organized into modules. Modules allow
-related code to be encapsulated into files that can be easily distributed and
-reused among systems.
-
+Code is organized into modules. Modules allow related code to be encapsulated and easily reused across systems.
  
 
-Creating a Module
------------------
+### Creating a Module
 
-A module consists of a lua file that simply returns a table or function. Modules
-are stored in a `/modules` directory on each computer. Most modules in this
-repository are structured like so:
+A module is a script that simply returns a table or function. Modules are stored in the `/modules` directory on a computer.
+Modules follow this basic structure:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 return {
@@ -82,75 +99,62 @@ return {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
-
-An example of a module that acts as an instantiable object may look like this:
+A module may mimic the behavior of a class in trational object-oriented programming. An example of a module that returns
+an 'instance' when its `new()` method is called:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 local module = {
     init = function(self)
         ...
+
+        return this
     end
 }
 
 return {
     new = function()
-        module:init()
+        return module:init()
     end
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
  
-
-A module may perform a single function and be structured as so:
+Alternatively, a module may contain a single function:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 return function()
     -- module code
 end
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
  
 
-Using a Module
---------------
-
-Modules can be used anywhere - even within other modules. Modules are typically
-‘imported’ using the `dofile` function at the beginning of a script like so:
+### Usage
+Modules are used by importing them into a program using the `dofile` function at the beginning of a script:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 local someModule = dofile('/modules/someModule.lua')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
-
-Now, whatever code was returned by the `/modules/someModule.lua` script will be
+In the example above, the value that was returned by the `/modules/someModule.lua` script will be
 stored in the `someModule` variable.
 
- 
 
-Updating Modules
-----------------
+### Updates
 
-Computers can implement the `update` module to keep their modules synchronized
-with a central module repository.
+The framework provides an `update` module to keep all local modules synchronized
+with a remote repository. The repository stores the latest module versions.
 
- 
-
-To use the `update` module, simply put this code at the beginning of a
-computer’s `startup` file:
+To have a computer automatically check for updates and prompt the user on startup, put the following line at the beginning of the
+computer’s `startup` file (Note: this is done automatically when the framework is set up using the install disk):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (dofile('/modules/update.lua'))()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
 
-### modules.json
+#### modules.json
 
-This file exists in the root directory of a computer. It stores version numbers
-for modules that are stored on a computer. An example of a `modules.json` file
-may look like this:
+This file is stored in the root directory of a computer. It stores local version numbers
+for modules that are stored on a computer. An example of a `modules.json` looks like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 {
@@ -159,33 +163,27 @@ may look like this:
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
-
-The `update` module will compare versions stored in this file with versions in a
+The `update` module will compare versions stored in this file with the versions in a
 repository server’s `modules.json` file. If any module versions don’t match the
 repository, the `update` module retrieves source code for each outdated module,
-updates the computer’s module files, and updates module versions in its
-`modules.json` file.
-
+updates the computer’s module files, and then updates the versions in its `modules.json` file.
  
 
 ### Repository Server
 
-Modules are stored on a computer that acts as the central repository server.
-This computer has similar file structure to other computers which implement
-modules, except that other computers keep their files in sync with the files in
-the repository server’s `modules/` directory.
+The repository server is a computer that stores the latest module versions.
+Repository servers contain a `/modules` directory and `modules.json` file. Other computers that use the `update` module
+will keep their local modules synchronized with the repository's.
 
- 
+When making updates to modules that are used across multiple systems, it's a good idea to keep the latest version stored
+on a repository server that other computers can reach over a network.
 
 To set up a repository server:
 
-1.  Create a `/modules` directory. Store the latest versions of modules in this
-    directory.
+1.  Create a `/modules` directory and store modules in it.
 
-2.  Create a `modules.json` file in the root directory of a computer. In this
-    file, create a JSON object with keys as module names and values as the
-    version number of the module stored in the server’s `/modules` directory.
+2.  Create a `modules.json` file in the root directory of a computer. The content of this file should be a JSON object with
+    keys as module names and values as the current version number of each module stored in the server’s `/modules` directory.
 
 3.  Copy
     [split](https://raw.githubusercontent.com/Kamprath/computercraft-files/master/21/modules/split.lua),
@@ -195,18 +193,21 @@ To set up a repository server:
     [repositoryserver](https://raw.githubusercontent.com/Kamprath/computercraft-files/master/21/modules/repositoryserver.lua)
     modules to the `/modules` directory.
 
-4.  Copy [this startup
-    file](https://github.com/Kamprath/computercraft-files/blob/master/21/startup)
-    to the root directory.
+4.  Copy [this startup file](https://github.com/Kamprath/computercraft-files/blob/master/21/startup)
+    to the root directory of the computer.
 
- 
+The computer should now act as a repository server. Computers using the `update` module will check for updates and prompt the user
+for updates if local versions do not match the repository's.
 
-The computer should now act as a repository server in which other computers
-using the `update` module will sync their module files with.
 
- 
+Menus
+-----
 
-Menu System
-===========
+-   Menus are displayed using the `menuinterface` module
+-   Modules are stored in the `/menus` directory
+-   Menus can be navigated using arrow keys, WASD+E, or by clicking on options
 
-Coming soon!
+### Creating a Menu
+
+
+### Using a Menu
