@@ -1,3 +1,5 @@
+These files accompany the world files found here. Computers and programs are documented here for reference.
+
 Computers
 =========
 
@@ -10,12 +12,47 @@ Computers
 | [7](https://github.com/Kamprath/computercraft-files/tree/master/7), 11-20 | Rednet Repeater            | Computers that relay rednet messages. These are placed at the top of the world for maximum range.               |
 | [21](https://github.com/Kamprath/computercraft-files/tree/master/21)      | Module Repository Server   | Hosts module files. Other systems can query for module versions and download module source code over rednet.    |
 | 25-28                                                                     | GPS Host                   | Computers acting as hosts in a GPS cluster                                                                      |
-| [30](https://github.com/Kamprath/computercraft-files/tree/master/21)                                                                        | TNT Turtle                 | Turtle that receives GPS coordinates over rednet and drops TNT at the position.                                 |
+| [30](https://github.com/Kamprath/computercraft-files/tree/master/21)      | TNT Turtle                 | Turtle that receives GPS coordinates over rednet and drops TNT at the position.                                 |
 | [39](https://github.com/Kamprath/computercraft-files/tree/master/39)      | Demo System                | Demonstrates proper file structure, module loading, and menu usage                                              |
-=======
-| [39](https://github.com/Kamprath/computercraft-files/tree/master/39)      | Demo System                | Demonstrates proper file structure, module loading, and menu usage                                              |
-
  
+
+Contents
+========
+1.  **Technical Guides**
+    -   The Framework (describe how the OS works)
+        -   Overview
+        -   Installation & Setup
+        -   Components
+            -   Files & Directory Structure
+            -   Modules (structure and document core modules)
+            -   Menus
+            -   Startup Script
+    -   Writing Programs
+        -   Program Structure
+        -   Using Modules
+        -   Using Menus
+        -   Repository
+    -   The Module Repository
+        -   Versioning
+        -   The `update` Module
+2.  **Systems**
+    -   Command Server & Client
+        -   Rednet RPC
+        -   Modules
+    -   TNT Turtles
+        -   GPS System
+        -   Remote Control Program
+
+The Framework
+=============
+
+Overview
+--------
+
+-   All computers share core modules and a common file structure 
+-   Each system is configured differently
+-   Framework provides a platform for writing programs that can be run on any computer that has the framework installed
+-   Programs can be run on all computers that have the framework
 
 Modules
 =======
