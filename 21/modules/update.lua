@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------
 --	Checks for newer module versions and downloads updates.
 --
---	Version: 1.1
+--	Version: 1.1.2
 --	Dependencies: json
 -----------------------------------------------------------------------------
 
@@ -64,17 +64,17 @@ local module = {
 		end
 
 		-- prompt user for update
-		if not self:prompt() then 
+		if not self:prompt(oldModules) then 
 			return
 		end
 
-		self:update(oldModules)
+		self:update(oldModules, repositoryVersions)
 
 		-- save versions table to /modules.json
 		self:saveVersions()
 	end,
 
-	prompt = function()
+	prompt = function(self, oldModules)
 		term.clear()
 		term.setCursorPos(1, 1)
 
@@ -170,7 +170,7 @@ local module = {
 	-- @param name 	Module name
 	-- @returns 	Returns source code of the module
 	getModule = function(self, name)
-		rednet.send(self.serverID, 'get ' .. name, protocol))
+		rednet.send(self.serverID, 'get ' .. name, protocol)
 		local senderID, message = rednet.receive(protocol, 2)
 		return message
 	end,
@@ -203,7 +203,7 @@ local module = {
 	--- Write updated source code to all outdated modules
 	-- @param self
 	-- @param oldModules	A table containing names of outdated modules
-	update = function(self, oldModules)
+	update = function(self, oldModules, repositoryVersions)
 		print('Updating...')
 	
 		-- for each of those module names, send a rednet message requesting the source of the latest version
