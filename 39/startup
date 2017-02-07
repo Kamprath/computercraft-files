@@ -1,5 +1,0 @@
-local menuinterface = dofile('/modules/menuinterface.lua')
-local menu = menuinterface.new(dofile('/menus/main.lua'))
-
-menu:showTitle()
-menu:show()
