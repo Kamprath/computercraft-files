@@ -38,14 +38,18 @@ Contents
 The Framework
 =============
 
--   All computers share core modules and a common file structure 
--   Each system is configured differently
--   Framework provides a platform for writing programs that can be run on any computer that has the framework installed
--   Programs can be run on all computers that have the framework
+The framework provides a common file structure and set of core modules for programs to use. The framework enables you to write
+programs that can reliably run across any computers that implement the framework and any required modules.
+
+System code is organized into modules that can be reused and redistributed between computers. A repository server makes modules
+available to all computers and enables computers to keep their modules up-to-date with the repository.
 
 
 Installation
 ------------
+
+An installation script can be run to automatically install files and setup the framework on a computer. The installation script
+is available on disk 0. To set up the framework using the installation script:
 
 1.  Attach a disk drive to the computer you're installing the framework on.
 
@@ -79,7 +83,7 @@ Files and Directories
 Modules
 -------
 
-Code is organized into modules. Modules allow related code to be encapsulated and easily reused across systems.
+Code is organized into modules. Modules allow related code to be encapsulated and easily reused.
  
 
 ### Creating a Module
@@ -99,7 +103,7 @@ return {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A module may mimic the behavior of a class in trational object-oriented programming. An example of a module that returns
+A module may mimic the behavior of a class in tradional object-oriented programming. An example of a module that returns
 an 'instance' when its `new()` method is called:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,11 +122,11 @@ return {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
-Alternatively, a module may contain a single function:
+Alternatively, a module may return a single function:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 return function()
-    -- module code
+    ...
 end
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
