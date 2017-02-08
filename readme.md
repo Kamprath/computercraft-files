@@ -1,5 +1,3 @@
-These files accompany the world files found here. Computers and programs are documented here for reference.
-
 Computers
 =========
 
@@ -18,24 +16,21 @@ Computers
 Contents
 ========
 1.  **Technical Guides**
-    -   The Framework
-        -   Installation
-        -   Files and Directories
-        -   Modules
-        -   Menus
-    -   The Module Repository
-        -   Versioning
-        -   The `update` Module
+    -   [The Framework](#framework)
+        -   [Installation](#framework-installation)
+        -   [Files and Directories](#framework-files)
+        -   [Modules](#framework-modules)
+        -   [Menus](#framework-menus)
 2.  **Systems**
-    -   Command Server & Client
-        -   Rednet RPC
-        -   Modules
-    -   TNT Turtles
-        -   GPS System
-        -   Remote Control Program
+    -   [Command Server & Client](#command)
+        -   [Rednet RPC](#command-rednet)
+        -   [Modules](#command-modules)
+    -   [TNT Turtles](#tnt)
+        -   [GPS System](#tnt-gps)
+        -   [Remote Control Program](#tnt-remote)
 
 
-The Framework
+The Framework<a name="framework"></a>
 =============
 
 The framework provides a common file structure and set of core modules for programs to use. The framework enables you to write
@@ -45,7 +40,7 @@ System code is organized into modules that can be reused and redistributed betwe
 available to all computers and enables computers to keep their modules up-to-date with the repository.
 
 
-Installation
+Installation<a name="framework-installation"></a>
 ------------
 
 An installation script can be run to automatically install files and setup the framework on a computer. The installation script
@@ -60,7 +55,7 @@ is available on disk 0. To set up the framework using the installation script:
     module updates on startup.
 
 
-Files and Directories
+Files and Directories<a name="framework-files"></a>
 ---------------------
 
 -   **`menus/`**   
@@ -80,7 +75,7 @@ Files and Directories
     local versions with the repository.
 
 
-Modules
+Modules<a name="framework-modules"></a>
 -------
 
 Code is organized into modules. Modules allow related code to be encapsulated and easily reused.
@@ -204,7 +199,7 @@ The computer should now act as a repository server. Computers using the `update`
 for updates if local versions do not match the repository's.
 
 
-Menus
+Menus<a name="framework-menus"></a>
 -----
 
 -   Menus are displayed using the `menuinterface` module
