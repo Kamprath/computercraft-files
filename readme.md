@@ -15,38 +15,35 @@ Computers
 
 Contents
 ========
-1.  **Technical Guides**
-    -   [The Framework](#framework)
-        -   [Installation](#framework-installation)
-        -   [Files and Directories](#framework-files)
-        -   [Modules](#framework-modules)
-        -   [Menus](#framework-menus)
-2.  **Systems**
-    -   [Command Server & Client](#command)
-        -   [Rednet RPC](#command-rednet)
-        -   [Modules](#command-modules)
-    -   [TNT Turtles](#tnt)
-        -   [GPS System](#tnt-gps)
-        -   [Remote Control Program](#tnt-remote)
+-   [The Framework](#framework)
+    -   [Installation](#framework-installation)
+    -   [Files and Directories](#framework-files)
+    -   [Modules](#framework-modules)
+    -   [Menus](#framework-menus)
+-   [Command Server & Client](#command)
+    -   [Rednet RPC](#command-rednet)
+    -   [Modules](#command-modules)
+-   [TNT Turtles](#tnt)
+    -   [GPS System](#tnt-gps)
+    -   [Remote Control Program](#tnt-remote)
 
 
 The Framework<a name="framework"></a>
 =============
 
-The framework provides a common file structure and set of core modules for programs to use. The framework enables you to write
-programs that can reliably run across any computers that implement the framework and any required modules.
+Computers use a basic framework to achieve program compatibility across systems. Computers that utilize the framework
+share a basic set of modules that allow programs to use features such as system updates, menus, networking, data formatting, and 
+more.
 
-System code is organized into modules that can be reused and redistributed between computers. A repository server makes modules
-available to all computers and enables computers to keep their modules up-to-date with the repository.
-
+Framework code follows a modular strucure. Code is organized into modules that can be reused across systems. A 
+[repository server](#framework-modules-repository) can be set up to provide systems with module updates.
 
 Installation<a name="framework-installation"></a>
 ------------
 
-An installation script can be run to automatically install files and setup the framework on a computer. The installation script
-is available on disk 0. To set up the framework using the installation script:
+An installation script on disk 0 automatically installs framework files to a computer. To use the installation script:
 
-1.  Attach a disk drive to the computer you're installing the framework on.
+1.  Attach a disk drive to the computer.
 
 2.  Insert disk 0 and then start the computer.
 
@@ -57,6 +54,8 @@ is available on disk 0. To set up the framework using the installation script:
 
 Files and Directories<a name="framework-files"></a>
 ---------------------
+
+The framework consists of several basic files and directories.
 
 -   **`menus/`**   
     This directory contains menu files. Menus contain a list of options that are bound to functions. Programs use the 
@@ -78,13 +77,16 @@ Files and Directories<a name="framework-files"></a>
 Modules<a name="framework-modules"></a>
 -------
 
-Code is organized into modules. Modules allow related code to be encapsulated and easily reused.
+All programs and libraries are organized into modules. Modules allow related code to be encapsulated into files that can be
+reused throughout your code.
  
 
 ### Creating a Module
 
-A module is a script that simply returns a table or function. Modules are stored in the `/modules` directory on a computer.
-Modules follow this basic structure:
+A module is simply a script that returns a table or function. Modules are stored in the `/modules` directory and loaded using
+Lua's built-in `dofile` function.
+
+Modules follow a simple structure. Here is an example of a module that contains two methods, `init` and `someMethod`:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 return {
@@ -92,14 +94,14 @@ return {
         ...
     end,
 
-    method = function(self)
+    someMethod = function(self)
         ...
     end
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A module may mimic the behavior of a class in tradional object-oriented programming. An example of a module that returns
-an 'instance' when its `new()` method is called:
+A module can be written to mimic the behavior of a class in tradional object-oriented programming. Here is an example of a module
+that returns an 'instance' of itself when its `new()` function is called:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 local module = {
@@ -127,28 +129,39 @@ end
  
 
 ### Usage
-Modules are used by importing them into a program using the `dofile` function at the beginning of a script:
+A module is loaded into a program using Lua's built-in `dofile` function:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 local someModule = dofile('/modules/someModule.lua')
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the example above, the value that was returned by the `/modules/someModule.lua` script will be
-stored in the `someModule` variable.
+In the example above, the `someModule.lua` script is executed. A value is returned and stored in the `someModule` variable.
 
+Some modules may return a function. These types of modules can be 'immediately-invoked' by calling their returned function
+immediately after `dofile()`. For example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+dofile('/modules/functionModule.lua')()
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This type of module invocation is useful for executing a program in a computer's `startup` file.
 
 ### Updates
 
-The framework provides an `update` module to keep all local modules synchronized
-with a remote repository. The repository stores the latest module versions.
+The framework provides an `update` module that keeps all local modules on a computer up-to-date
+with modules on a 'repository' computer. The `update` module sends local module versions to a repository computer
+via rednet message. If any of the repository's modules do not match, it sends the computer source code for each
+outdated module.
 
-To have a computer automatically check for updates and prompt the user on startup, put the following line at the beginning of the
+To automatically check for updates and prompt the user on computer startup, prepend the following line to the
 computer’s `startup` file (Note: this is done automatically when the framework is set up using the install disk):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-(dofile('/modules/update.lua'))()
+dofile('/modules/update.lua')()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+A repository server is required for the `update` module to work. See the [Repository Server](#framework-modules-repository)
+section for setup instructions.
 
 #### modules.json
 
@@ -168,7 +181,7 @@ repository, the `update` module retrieves source code for each outdated module,
 updates the computer’s module files, and then updates the versions in its `modules.json` file.
  
 
-### Repository Server
+### Repository Server<a name="framework-modules-repository"></a>
 
 The repository server is a computer that stores the latest module versions.
 Repository servers contain a `/modules` directory and `modules.json` file. Other computers that use the `update` module
@@ -205,6 +218,7 @@ Menus<a name="framework-menus"></a>
 -   Menus are displayed using the `menuinterface` module
 -   Modules are stored in the `/menus` directory
 -   Menus can be navigated using arrow keys, WASD+E, or by clicking on options
+
 
 ### Creating a Menu
 
