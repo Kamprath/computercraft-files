@@ -10,5 +10,6 @@
 	"turtle": "0.1.10",
 	"turtleclient": "0.1",
 	"tntturtle": "0.1.1",
-	"install": "0.2.9"
+	"install": "0.2.9",
+	"teleport": "1.0.1"
 }

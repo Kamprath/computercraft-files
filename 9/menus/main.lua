@@ -1,6 +1,7 @@
 local serverID, protocol = ...
 
 local menuinterface = dofile('/modules/menuinterface.lua')
+local Teleport = dofile('/modules/teleport.lua')
 
 return {
 	-- Load gamemode menu
@@ -13,7 +14,20 @@ return {
 	-- Load the teleport menu
 	{'Teleport', function(menu)
 		local title = 'Teleport Menu'
-		menu:add(title, menuinterface.load('teleport', serverID, protocol))
+		local teleport = Teleport.new(serverID, protocol)
+		local teleportMenu = teleport:getMenu()
+
+		if #teleportMenu == 0 then 
+			menu:message('teleport.json not found', 2)
+			return
+		end
+
+		teleportMenu[#teleportMenu+1] = {'Back', function(menu)
+			menu:back()
+		end}
+		
+		-- menu:add(title, menuinterface.load('teleport', serverID, protocol))
+		menu:add(title, teleportMenu)
 		menu:use(title)
 	end},
 
