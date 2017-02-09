@@ -1,8 +1,14 @@
--- v0.4.13
+-----------------------------------------------------------------------------
+--	An RPC server that executes procedures requested over the rednet 'rpc'
+--	protocol.
+--
+--	Version: 0.4.15
+--	Dependencies: log, split
+-----------------------------------------------------------------------------
+
 local log = dofile('/modules/log.lua')
 local split = dofile('/modules/split.lua')
 
---- This application acts as an RPC server over rednet.
 local rednetrpc = {
 	
 	-- rednet host info
@@ -15,22 +21,22 @@ local rednetrpc = {
 	-- indicates if the application is listening for procedure calls over rednet
 	listening = false,
 
+	--- Initialize server
+	-- @param self
+	-- @param procedures	(Optional) A table of procedure functions to register
+	-- @param hostname		(Optional) A rednet hostname. Defaults to 'rpc_server'.
+	-- @return				Returns the server instance
 	init = function(self, procedures, hostname)
-		local hostnameMsg = ''
-
-		if hostname ~= nil then 
-			self.hostname = hostname
-			hostnameMsg = ' using hostname "' .. hostname .. '"'
-		end
-
+		self.hostname = hostname or self.hostname
+		
 		-- open rednet
 		if not self:open() then
+			log('Error: No modem attached to this computer.', 3)
 			return
 		end
 
 		term.clear()
-		print('Started RPC server' .. hostnameMsg)
-		print()
+		print('Started RPC server on protocol "' .. self.protocol .. '" using hostname "' .. self.hostname .. '".\n')
 
 		-- register procedures, if provided
 		if procedures ~= nil then 
@@ -50,6 +56,9 @@ local rednetrpc = {
 		return self
 	end,
 
+	--- Add a table of functions to the procedures table
+	-- @param self
+	-- @param procedures	A table of functions to register as procedures
 	registerProcedures = function(self, procedures)
 		for name, func in pairs(procedures) do
 			self.procedures[name] = func
@@ -57,6 +66,8 @@ local rednetrpc = {
 		end
 	end,
 
+	--- Register a 'help' procedure to return a list of all registered procedures
+	-- @param self
 	registerHelpProcedures = function(self)
 		local list = function(args)
 			local msg = ''
@@ -66,11 +77,12 @@ local rednetrpc = {
 			return msg
 		end
 
-		self.procedures['procedures'] = list
-		self.procedures['list'] = list
-		self.procedures['help'] = list 
+		self.procedures['help'] = list
 	end,
 
+	--- Open any modem attached to the computer
+	-- @param self
+	-- @return		Returns true if successful or false if not
 	open = function(self)
 		local sides = {'left', 'right', 'front', 'back', 'top', 'bottom'}
 		for key, val in ipairs(sides) do
@@ -82,10 +94,11 @@ local rednetrpc = {
 			end
 		end
 
-		log('Error: No modem attached to this computer.', 3)
 		return false
 	end,
 
+	--- Start loop to receive and respond to rednet RPC messages
+	-- @param self
 	listen = function(self)
 		self.listening = true
 
@@ -115,6 +128,10 @@ local rednetrpc = {
 }
 
 return {
+	--- Initialize and return an instance of the module
+	-- @param procedures	(Optional) A table of functions to register as procedures
+	-- @param hostname		(Optional) A hostname to use on rednet
+	-- @return				Returns the module table
 	new = function(procedures, hostname)
 		return rednetrpc:init(procedures, hostname)
 	end
